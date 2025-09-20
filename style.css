@@ -14,14 +14,12 @@
 
   /* Contact: peach + sand */
   --contact-t1: rgba(247, 216, 196, 0.32); /* #F7D8C4 */
---contact-t2: rgba(255, 255, 240, 0.26); /* #FFFFF0, off-white */
+  --contact-t2: rgba(255, 255, 240, 0.26); /* #FFFFF0, off-white */
 
-  /* Footer: shades of #564e4c 
---footer-t1: rgba(104, 96, 94, 0.30);  #68605E (lighter) 
---footer-t2: rgba(68, 60, 58, 0.26);  /* #443C3A (darker) */
-/* === Solid backgrounds for sections === */
-
-.about-section { background: #f9f9f7; }
+  /* dynamic navbar + measurements */
+  --nav-height: 80px;
+  --nav-alpha: 0; /* 0 = transparent, up to ~0.8 via JS */
+  .about-section { background: #f9f9f7; }
 .contact-section { background: #DEE2E6; }
 .site-footer { background: #FF0000; }
 }
@@ -36,24 +34,34 @@ body{
   background:var(--secondary-color);
   overflow-x:hidden; /* allow vertical scroll */
 }
+/* Keep the SHELL HUB. logo link white always */
+.logo-link,
+.logo-link:visited,
+.logo-link:hover,
+.logo-link:active,
+.logo-link:focus {
+  color: #fff !important;            /* or var(--primary-color) */
+  text-decoration: none;
+}
 
-/* ===== NAVBAR (sticky + white transparent gradient; markup unchanged) ===== */
+/* ===== NAVBAR (fixed + darkens on scroll) ===== */
 header{
-  position: sticky; top: 0; z-index: 1000;
+  position: fixed; top: 0; left: 0; right: 0; width: 100%;
+  z-index: 1000;
   display: flex; justify-content: space-between; align-items: center;
   padding: 20px 40px;
-  /* dynamic background using --nav-alpha */
-  background: rgba(0,0,0,var(--nav-alpha));
+
+  background: rgba(0,0,0,var(--nav-alpha)) !important;   /* transparent -> darker */
   border-bottom: 1px solid rgba(255,255,255, calc(var(--nav-alpha) * 0.30));
   box-shadow: 0 8px 20px rgba(0,0,0, calc(var(--nav-alpha) * 0.40));
   transition: background-color .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
 
-/* only blur once it's a little opaque 
+/* blur only once it's a little opaque (JS toggles .blur) */
 header.blur {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-}*/
+}
 
 .logo{color:var(--primary-color); font-weight:700}
 nav ul{list-style:none; display:flex}
@@ -73,16 +81,15 @@ nav ul li a:hover{color:#ccc}
   position:relative;
   min-height:72vh;
   display:flex; align-items:center; justify-content:center;
-  padding:40px 20px;
+  padding: calc(40px + var(--nav-height)) 20px 40px; /* clear fixed header */
 }
 .video-wrap{position:absolute; inset:0; z-index:-2; overflow:hidden}
-#myVideo{width:100%; height:100%; object-fit:cover; filter: none !important;  }
+#myVideo{width:100%; height:100%; object-fit:cover; filter: none !important; }
 .hero-overlay{
-    position:absolute; 
-    inset:0; 
-     display: none !important;   
-     background: transparent !important;
-    z-index:-1}
+  position:absolute; inset:0; z-index:-1;
+  display: none !important;             /* play video as-is */
+  background: transparent !important;
+}
 
 .hero-content{display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center}
 .info-card{
@@ -134,12 +141,12 @@ nav ul li a:hover{color:#ccc}
 }
 .section-text{font-size:1.02rem; line-height:1.75; opacity:.95}
 
-/* ABOUT: subtle purple/pink tint (keeps palette but clear separation) */
+/* ABOUT tint (kept) */
 .about-section{
   background:linear-gradient(135deg, var(--about-t1), var(--about-t2));
 }
 
-/* CONTACT: subtle green tint */
+/* CONTACT tint (kept) */
 .contact-section{
   background:linear-gradient(135deg, var(--contact-t1), var(--contact-t2));
 }
@@ -149,7 +156,7 @@ nav ul li a:hover{color:#ccc}
 .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
 .form-field{display:flex; flex-direction:column; gap:8px}
 .form-field--full{grid-column:1 / -1}
-label, legend{font-weight:600; color:#fff}
+label, legend{font-weight:600; color:#333} /* readable on light bg */
 
 input[type="text"], input[type="email"], textarea{
   background:rgba(255,255,255,.92);
@@ -175,9 +182,9 @@ input:focus, textarea:focus{
 .form-actions{margin-top:12px}
 .submit-btn{width:260px}
 
-/* FOOTER: subtle blue/indigo tint */
+/* FOOTER */
 .site-footer{
-  background:linear-gradient(135deg, var(--footer-t1), var(--footer-t2));
+  background:linear-gradient(135deg, var(--footer-t1), var(--footer-t2)); /* will be overridden by solid #FF0000 above */
   border-top:1px solid rgba(255,255,255,.18);
   backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
 }
@@ -202,29 +209,11 @@ input:focus, textarea:focus{
   text-align:center; padding:10px 0; opacity:.95
 }
 
-/* responsive */
-@media (max-width:900px){
-  .form-grid{grid-template-columns:1fr}
-  header{flex-direction:column; align-items:center; padding:20px}
-  .main-nav, .social-nav{margin-top:15px}
-  .main-nav ul, .social-nav ul{justify-content:center}
-}
-@media (max-width:680px){
-  .footer-inner{grid-template-columns:1fr}
-  .submit-btn{width:100%}
-}
-
-
-/* === Readability on light sections === */
+/* === Readability on light sections (kept) === */
 .about-section .panel,
 .contact-section .panel {
-  color: #333;                           /* dark text */
-  border-color: rgba(0,0,0,0.12);        /* softer border on light bg */
-}
-
-.contact-section label,
-.contact-section legend {
-  color: #333;                           /* form labels dark on light bg */
+  color: #333;
+  border-color: rgba(0,0,0,0.12);
 }
 
 /* Footer stays light-on-dark */
@@ -234,172 +223,97 @@ input:focus, textarea:focus{
 .site-footer a {
   color: #fff;
 }
-/* === Dynamic darkening navbar === */
-:root { --nav-alpha: 0; } /* 0 = transparent, up to ~0.8 */
 
-/* Navbar height + starting transparency */
-:root { 
-  --nav-height: 80px;    /* adjust if your header is taller/shorter */
-  --nav-alpha: 0;        /* 0 at top; JS will raise as you scroll */
-}
-
-/* Header: fixed, fully transparent at top, darkens on scroll */
-header{
-  position: fixed; top: 0; left: 0; right: 0; width: 100%;
-  z-index: 1000;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 20px 40px;
-
-  background: rgba(0,0,0,var(--nav-alpha)) !important;   /* transparent -> darker */
-  border-bottom: 1px solid rgba(255,255,255, calc(var(--nav-alpha) * 0.30));
-  box-shadow: 0 8px 20px rgba(0,0,0, calc(var(--nav-alpha) * 0.40));
-  transition: background-color .25s ease, box-shadow .25s ease, border-color .25s ease;
-}
-
-/* Add blur only once it has some opacity */
-header.blur {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-/* Hero starts AT THE VERY TOP, behind the fixed header */
-.hero{
-  position: relative;
-  min-height: 72vh;
-  display: flex; align-items: center; justify-content: center;
-
-  /* add top padding equal to header height so content isn't hidden under it */
-  padding: calc(40px + var(--nav-height)) 20px 40px;
-}
-
-/* Video sits behind everything inside the hero */
-.video-wrap{ position: absolute; inset: 0; z-index: -2; overflow: hidden; }
-#myVideo{ width: 100%; height: 100%; object-fit: cover; filter: brightness(.6); }
-
-/* Make the very top of the hero overlay transparent so the header looks truly clear at top */
-.hero-overlay{
-  position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0) 0,
-    rgba(0,0,0,0) var(--nav-height),
-    rgba(0,0,0,0.40) calc(var(--nav-height) + 1px),
-    rgba(0,0,0,0.40) 100%
-  );
-  pointer-events: none;
-}
-
-/* === ABOUT: full-bleed, full-screen 2×2 grid === */
-:root { --nav-height: 80px; } /* keep in sync with your header height */
-
+/* === ABOUT: full-bleed, full-screen 2×2 grid on desktop, stacks on mobile === */
 .about-section{
-  /* full width & full viewport height (minus fixed navbar) */
   padding: 0 !important;
   min-height: calc(100vh - var(--nav-height));
-  background: #f9f9f7; /* your chosen bg */
 }
-
 .about-section .container{
-  /* break out of the site container */
   width: 100vw !important;
   max-width: none !important;
   margin: 0 !important;
   padding: 0 !important;
 }
-
 .about-section .panel{
-  /* remove inner padding/rounded edges so grid is edge-to-edge */
   padding: 0 !important;
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
 }
-
-/* Make the grid fill the whole viewport area */
+/* Desktop: 2×2 full-viewport grid */
 .about-section .about-grid{
   height: calc(100vh - var(--nav-height));
   display: grid;
   grid-template-columns: 1fr 1fr;   /* 2 columns */
   grid-template-rows: 1fr 1fr;      /* 2 rows */
-  gap: 0;                           /* no gaps so it’s seamless */
+  gap: 0;
 }
-
-/* Each cell flexes equally; no minimum height needed now */
 .about-section .about-cell{
-  min-height: 0 !important;
-  border-radius: 0 !important;
+  min-height: 0;
+  border-radius: 0;
 }
-
-/* Photos fill their block */
 .about-section .about-photo img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
 }
-
-/* Text blocks centered */
 .about-section .about-text,
 .about-section .about-rentals{
-  display: grid;
-  place-items: center;      /* center both axes */
-  text-align: center;
-  padding: 24px;            /* breathing room for text */
+  display: grid; place-items: center;
+  text-align: center; padding: 24px;
 }
+.about-section .about-text-inner{ max-width: 560px; }
 
-.about-section .about-text-inner{
-  max-width: 560px;
-}
-
-/* OPTIONAL: if you want the 2×2 layout even on phones, keep this.
-   Otherwise, remove it and they’ll stack per your earlier media rule. */
-@media (max-width: 700px){
+/* Mobile: stack to avoid overlap */
+/* === ABOUT (mobile): place "Our Services" between the two photos === */
+@media (max-width: 900px){
   .about-section .about-grid{
-    grid-template-columns: 1fr 1fr; /* still 2×2 on small screens */
-    grid-template-rows: 1fr 1fr;
+    /* force single column & explicit order */
+    height: auto !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto !important;
+    grid-template-areas:
+      "cell1"  /* 1) Top-left: About text */
+      "cell2"  /* 2) Top-right: photo (your render5 spot) */
+      "cell4"  /* 3) Bottom-right: Our Services text */
+      "cell3"; /* 4) Bottom-left: photo (your render3 spot) */
+    gap: 12px;
   }
-  .about-section .about-text-inner{ padding: 12px; }
-  .section-title{ font-size: 1.3rem; }
-  .section-text{ font-size: .98rem; }
+
+  /* map existing children to those areas (no HTML changes) */
+  .about-section .about-grid > :nth-child(1){ grid-area: cell1; }
+  .about-section .about-grid > :nth-child(2){ grid-area: cell2; }
+  .about-section .about-grid > :nth-child(3){ grid-area: cell3; }
+  .about-section .about-grid > :nth-child(4){ grid-area: cell4; }
+
+  /* keep stacked photo size tidy */
+  .about-section .about-photo img{
+    height: 40vh; object-fit: cover;
+  }
 }
-/* ===== Burger button (hidden on desktop) ===== */
+
+
+/* ===== Burger button (next to logo on mobile) ===== */
 .nav-toggle{
   display:none;              /* desktop hidden */
-  background:none;
-  border:none;
-  color:#fff;
-  width:44px; height:44px;
-  align-items:center; justify-content:center;
-  cursor:pointer;
-  margin-right:8px;
-}
-
-/* Burger button (desktop hidden) */
-.nav-toggle{
-  display:none; /* show only on mobile */
   background:none; border:none; color:#fff;
   width:44px; height:44px; cursor:pointer;
-  margin-left:10px; /* small gap from logo */
+  margin-left:10px;          /* small gap from logo */
 }
-
-/* 3-line burger */
 .nav-toggle .burger{display:inline-flex; flex-direction:column; gap:6px;}
 .nav-toggle .burger span{
   display:block; width:22px; height:2px; background:#fff;
   transition:transform .2s ease, opacity .2s ease;
 }
 
-/* MOBILE: place burger right of logo and show dropdown panel */
+/* MOBILE: show burger and dropdown panel */
 @media (max-width: 900px){
   .nav-toggle{ display:inline-flex; }
+  .social-nav{ display:none; } /* optional: hide socials on mobile */
 
-  /* optional: hide social icons on mobile */
-  .social-nav{ display:none; }
-
-  /* dropdown panel directly below fixed header */
   .main-nav{
     position: fixed;
-    top: var(--nav-height, 80px); left: 0; right: 0;
+    top: var(--nav-height); left: 0; right: 0;
     z-index: 999;
   }
   .main-nav ul{
@@ -424,4 +338,14 @@ header.nav-open .nav-toggle .burger span:nth-child(1){ transform: translateY(8px
 header.nav-open .nav-toggle .burger span:nth-child(2){ opacity:0; }
 header.nav-open .nav-toggle .burger span:nth-child(3){ transform: translateY(-8px) rotate(-45deg); }
 
-
+/* responsive (kept) */
+@media (max-width:900px){
+  .form-grid{grid-template-columns:1fr}
+  header{flex-direction:column; align-items:center; padding:20px}
+  .main-nav, .social-nav{margin-top:15px}
+  .main-nav ul, .social-nav ul{justify-content:center}
+}
+@media (max-width:680px){
+  .footer-inner{grid-template-columns:1fr}
+  .submit-btn{width:100%}
+}
