@@ -349,3 +349,19 @@ header.nav-open .nav-toggle .burger span:nth-child(3){ transform: translateY(-8p
   .footer-inner{grid-template-columns:1fr}
   .submit-btn{width:100%}
 }
+/* --- Keep logo and burger on one line (top-right burger) --- */
+@media (max-width: 900px){
+  header{
+    flex-direction: row !important;      /* override earlier column */
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo{ flex: 0 0 auto; }               /* logo keeps natural width */
+
+  .nav-toggle{
+    display: inline-flex;                 /* ensure it shows on mobile */
+    margin-left: auto;                    /* push it to the far right */
+    align-self: center;
+  }
+}
