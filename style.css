@@ -1,0 +1,427 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root{
+  /* keep your black/white palette */
+  --primary-color:#ffffff;
+  --secondary-color:#000000;
+  --transparent-white:rgba(255,255,255,.8);
+  --text-color:#333;
+
+  /* LIGHT NUDE TINTS */
+  /* About: cream + blush */
+  --about-t1: rgba(248, 239, 234, 0.35); /* #F8EFEA */
+  --about-t2: rgba(243, 214, 207, 0.28); /* #F3D6CF */
+
+  /* Contact: peach + sand */
+  --contact-t1: rgba(247, 216, 196, 0.32); /* #F7D8C4 */
+--contact-t2: rgba(255, 255, 240, 0.26); /* #FFFFF0, off-white */
+
+  /* Footer: shades of #564e4c 
+--footer-t1: rgba(104, 96, 94, 0.30);  #68605E (lighter) 
+--footer-t2: rgba(68, 60, 58, 0.26);  /* #443C3A (darker) */
+/* === Solid backgrounds for sections === */
+
+.about-section { background: #f9f9f7; }
+.contact-section { background: #DEE2E6; }
+.site-footer { background: #FF0000; }
+}
+
+/* reset */
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* base */
+body{
+  font-family:'Poppins',sans-serif;
+  color:var(--primary-color);
+  background:var(--secondary-color);
+  overflow-x:hidden; /* allow vertical scroll */
+}
+
+/* ===== NAVBAR (sticky + white transparent gradient; markup unchanged) ===== */
+header{
+  position: sticky; top: 0; z-index: 1000;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px;
+  /* dynamic background using --nav-alpha */
+  background: rgba(0,0,0,var(--nav-alpha));
+  border-bottom: 1px solid rgba(255,255,255, calc(var(--nav-alpha) * 0.30));
+  box-shadow: 0 8px 20px rgba(0,0,0, calc(var(--nav-alpha) * 0.40));
+  transition: background-color .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+/* only blur once it's a little opaque 
+header.blur {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}*/
+
+.logo{color:var(--primary-color); font-weight:700}
+nav ul{list-style:none; display:flex}
+nav ul li{margin-right:20px}
+nav ul li a{
+  text-decoration:none; color:var(--primary-color);
+  font-weight:400; transition:color .3s ease
+}
+nav ul li a:hover{color:#ccc}
+.social-nav ul li:first-child a{
+  border:1px solid var(--primary-color); padding:5px 15px; border-radius:20px; margin-right:15px
+}
+.social-nav ul li a{font-size:1.2rem}
+
+/* ===== HERO (video only here) ===== */
+.hero{
+  position:relative;
+  min-height:72vh;
+  display:flex; align-items:center; justify-content:center;
+  padding:40px 20px;
+}
+.video-wrap{position:absolute; inset:0; z-index:-2; overflow:hidden}
+#myVideo{width:100%; height:100%; object-fit:cover; filter: none !important;  }
+.hero-overlay{
+    position:absolute; 
+    inset:0; 
+     display: none !important;   
+     background: transparent !important;
+    z-index:-1}
+
+.hero-content{display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center}
+.info-card{
+  background:var(--transparent-white); color:var(--text-color);
+  padding:16px 24px; border-radius:10px;
+  font-size:1.05rem; font-weight:600;
+  box-shadow:0 4px 15px rgba(0,0,0,.1); backdrop-filter:blur(5px);
+  max-width:100%;
+}
+.info-card p{white-space:nowrap}          /* one line on desktop */
+@media (max-width:720px){ .info-card p{white-space:normal} }
+
+.button-container{display:flex; flex-direction:column; align-items:center; gap:16px}
+.btn{
+  text-decoration:none; color:var(--primary-color);
+  padding:16px 24px; border-radius:40px; font-weight:600; letter-spacing:1px;
+  transition:background-color .3s ease, transform .2s ease;
+  text-transform:uppercase; background:var(--secondary-color);
+  border:1px solid var(--primary-color);
+  width:340px; max-width:100%; text-align:center;   /* equal size buttons */
+}
+.btn:hover{transform:translateY(-3px); box-shadow:0 6px 12px rgba(0,0,0,.2)}
+
+/* ===== CLEAR CUT DIVIDER ===== */
+.section-divider{
+  height:3px;
+  background:linear-gradient(90deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.0) 100%);
+  margin:0; /* full-bleed */
+}
+
+/* ===== GENERIC SECTION WRAPPER ===== */
+.section{
+  position:relative;
+  z-index:1;
+  padding:70px 20px;
+  display:flex; justify-content:center;
+}
+.container{width:min(1100px,92vw)}
+.panel{
+  border-radius:16px;
+  padding:26px 26px;
+  border:1px solid rgba(255,255,255,0.15);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.section-title{
+  font-size:1.6rem; margin-bottom:12px; font-weight:700;
+  display:flex; align-items:center; gap:10px
+}
+.section-text{font-size:1.02rem; line-height:1.75; opacity:.95}
+
+/* ABOUT: subtle purple/pink tint (keeps palette but clear separation) */
+.about-section{
+  background:linear-gradient(135deg, var(--about-t1), var(--about-t2));
+}
+
+/* CONTACT: subtle green tint */
+.contact-section{
+  background:linear-gradient(135deg, var(--contact-t1), var(--contact-t2));
+}
+
+/* Contact form */
+.contact-form{margin-top:14px}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.form-field{display:flex; flex-direction:column; gap:8px}
+.form-field--full{grid-column:1 / -1}
+label, legend{font-weight:600; color:#fff}
+
+input[type="text"], input[type="email"], textarea{
+  background:rgba(255,255,255,.92);
+  color:var(--text-color);
+  border:1px solid rgba(0,0,0,.2);
+  border-radius:10px;
+  padding:12px 14px;
+  font:inherit; outline:none;
+  transition:box-shadow .2s ease, border-color .2s ease
+}
+textarea{resize:vertical}
+input:focus, textarea:focus{
+  border-color:rgba(255,255,255,.9);
+  box-shadow:0 0 0 3px rgba(255,255,255,.25)
+}
+
+/* radios */
+.radio-group{display:flex; gap:18px; flex-wrap:wrap; margin-top:6px}
+.radio{display:inline-flex; align-items:center; gap:8px}
+.radio input[type="radio"]{transform:scale(1.1)}
+
+/* submit button (reuses .btn look) */
+.form-actions{margin-top:12px}
+.submit-btn{width:260px}
+
+/* FOOTER: subtle blue/indigo tint */
+.site-footer{
+  background:linear-gradient(135deg, var(--footer-t1), var(--footer-t2));
+  border-top:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+}
+.footer-inner{
+  width:min(1100px,92vw);
+  margin:0 auto;
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:20px; padding:26px 0
+}
+.footer-block h3{font-size:1.05rem; margin-bottom:8px}
+.footer-block p{line-height:1.7}
+.footer-block a{color:#fff; text-decoration:underline}
+.social-links a{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:36px; height:36px; border:1px solid rgba(255,255,255,.8);
+  border-radius:50%; margin-right:8px; text-decoration:none; color:#fff;
+  transition: transform .15s ease, background .15s ease
+}
+.social-links a:hover{transform:translateY(-2px); background:rgba(255,255,255,.12)}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.18);
+  text-align:center; padding:10px 0; opacity:.95
+}
+
+/* responsive */
+@media (max-width:900px){
+  .form-grid{grid-template-columns:1fr}
+  header{flex-direction:column; align-items:center; padding:20px}
+  .main-nav, .social-nav{margin-top:15px}
+  .main-nav ul, .social-nav ul{justify-content:center}
+}
+@media (max-width:680px){
+  .footer-inner{grid-template-columns:1fr}
+  .submit-btn{width:100%}
+}
+
+
+/* === Readability on light sections === */
+.about-section .panel,
+.contact-section .panel {
+  color: #333;                           /* dark text */
+  border-color: rgba(0,0,0,0.12);        /* softer border on light bg */
+}
+
+.contact-section label,
+.contact-section legend {
+  color: #333;                           /* form labels dark on light bg */
+}
+
+/* Footer stays light-on-dark */
+.site-footer,
+.site-footer h3,
+.site-footer p,
+.site-footer a {
+  color: #fff;
+}
+/* === Dynamic darkening navbar === */
+:root { --nav-alpha: 0; } /* 0 = transparent, up to ~0.8 */
+
+/* Navbar height + starting transparency */
+:root { 
+  --nav-height: 80px;    /* adjust if your header is taller/shorter */
+  --nav-alpha: 0;        /* 0 at top; JS will raise as you scroll */
+}
+
+/* Header: fixed, fully transparent at top, darkens on scroll */
+header{
+  position: fixed; top: 0; left: 0; right: 0; width: 100%;
+  z-index: 1000;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px;
+
+  background: rgba(0,0,0,var(--nav-alpha)) !important;   /* transparent -> darker */
+  border-bottom: 1px solid rgba(255,255,255, calc(var(--nav-alpha) * 0.30));
+  box-shadow: 0 8px 20px rgba(0,0,0, calc(var(--nav-alpha) * 0.40));
+  transition: background-color .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+/* Add blur only once it has some opacity */
+header.blur {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Hero starts AT THE VERY TOP, behind the fixed header */
+.hero{
+  position: relative;
+  min-height: 72vh;
+  display: flex; align-items: center; justify-content: center;
+
+  /* add top padding equal to header height so content isn't hidden under it */
+  padding: calc(40px + var(--nav-height)) 20px 40px;
+}
+
+/* Video sits behind everything inside the hero */
+.video-wrap{ position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+#myVideo{ width: 100%; height: 100%; object-fit: cover; filter: brightness(.6); }
+
+/* Make the very top of the hero overlay transparent so the header looks truly clear at top */
+.hero-overlay{
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0,
+    rgba(0,0,0,0) var(--nav-height),
+    rgba(0,0,0,0.40) calc(var(--nav-height) + 1px),
+    rgba(0,0,0,0.40) 100%
+  );
+  pointer-events: none;
+}
+
+/* === ABOUT: full-bleed, full-screen 2×2 grid === */
+:root { --nav-height: 80px; } /* keep in sync with your header height */
+
+.about-section{
+  /* full width & full viewport height (minus fixed navbar) */
+  padding: 0 !important;
+  min-height: calc(100vh - var(--nav-height));
+  background: #f9f9f7; /* your chosen bg */
+}
+
+.about-section .container{
+  /* break out of the site container */
+  width: 100vw !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.about-section .panel{
+  /* remove inner padding/rounded edges so grid is edge-to-edge */
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+/* Make the grid fill the whole viewport area */
+.about-section .about-grid{
+  height: calc(100vh - var(--nav-height));
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* 2 columns */
+  grid-template-rows: 1fr 1fr;      /* 2 rows */
+  gap: 0;                           /* no gaps so it’s seamless */
+}
+
+/* Each cell flexes equally; no minimum height needed now */
+.about-section .about-cell{
+  min-height: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Photos fill their block */
+.about-section .about-photo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Text blocks centered */
+.about-section .about-text,
+.about-section .about-rentals{
+  display: grid;
+  place-items: center;      /* center both axes */
+  text-align: center;
+  padding: 24px;            /* breathing room for text */
+}
+
+.about-section .about-text-inner{
+  max-width: 560px;
+}
+
+/* OPTIONAL: if you want the 2×2 layout even on phones, keep this.
+   Otherwise, remove it and they’ll stack per your earlier media rule. */
+@media (max-width: 700px){
+  .about-section .about-grid{
+    grid-template-columns: 1fr 1fr; /* still 2×2 on small screens */
+    grid-template-rows: 1fr 1fr;
+  }
+  .about-section .about-text-inner{ padding: 12px; }
+  .section-title{ font-size: 1.3rem; }
+  .section-text{ font-size: .98rem; }
+}
+/* ===== Burger button (hidden on desktop) ===== */
+.nav-toggle{
+  display:none;              /* desktop hidden */
+  background:none;
+  border:none;
+  color:#fff;
+  width:44px; height:44px;
+  align-items:center; justify-content:center;
+  cursor:pointer;
+  margin-right:8px;
+}
+
+/* Burger button (desktop hidden) */
+.nav-toggle{
+  display:none; /* show only on mobile */
+  background:none; border:none; color:#fff;
+  width:44px; height:44px; cursor:pointer;
+  margin-left:10px; /* small gap from logo */
+}
+
+/* 3-line burger */
+.nav-toggle .burger{display:inline-flex; flex-direction:column; gap:6px;}
+.nav-toggle .burger span{
+  display:block; width:22px; height:2px; background:#fff;
+  transition:transform .2s ease, opacity .2s ease;
+}
+
+/* MOBILE: place burger right of logo and show dropdown panel */
+@media (max-width: 900px){
+  .nav-toggle{ display:inline-flex; }
+
+  /* optional: hide social icons on mobile */
+  .social-nav{ display:none; }
+
+  /* dropdown panel directly below fixed header */
+  .main-nav{
+    position: fixed;
+    top: var(--nav-height, 80px); left: 0; right: 0;
+    z-index: 999;
+  }
+  .main-nav ul{
+    display:none;
+    flex-direction:column;
+    background: rgba(0,0,0,0.88);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+  }
+  .main-nav.open ul{ display:flex; }
+
+  .main-nav ul li{
+    margin:0; border-top:1px solid rgba(255,255,255,0.12);
+  }
+  .main-nav ul li a{
+    display:block; padding:14px 24px; color:#fff; text-decoration:none;
+  }
+}
+
+/* Burger -> X animation when menu open (toggle class on <header>) */
+header.nav-open .nav-toggle .burger span:nth-child(1){ transform: translateY(8px) rotate(45deg); }
+header.nav-open .nav-toggle .burger span:nth-child(2){ opacity:0; }
+header.nav-open .nav-toggle .burger span:nth-child(3){ transform: translateY(-8px) rotate(-45deg); }
+
+
